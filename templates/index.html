@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Q Music 搜索 - by bywenshu.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="https://pub-2f343bc3f5884c2bb9d409ccde31c5af.r2.dev/favicon.ico.svg" type="image/svg+xml">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #e1f5ec;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            margin-top: 20px;
+            font-size: 36px; /* 调整字体大小 */
+            cursor: pointer; /* 添加光标样式 */
+        }
+        form {
+            margin-bottom: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 35%;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            margin-right: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            background-color: #8aa9db;
+            color: white;
+            cursor: pointer;
+        }
+        .results {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+        .result-container {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+            padding: 10px;
+            width: 90%;
+            max-width: 600px;
+            transition: transform 0.2s;
+            flex-wrap: wrap;
+        }
+        .result-container:hover {
+            transform: scale(1.02);
+        }
+        .result-container img {
+            border-radius: 8px;
+            width: 100%;
+            max-width: 115px;
+            height: 115px;
+            object-fit: cover;
+            cursor: pointer;
+            loading: lazy; /* 添加懒加载属性 */
+        }
+        .result-details {
+            margin-left: 20px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        .result-details a {
+            text-decoration: none;
+            color: #6200ea;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        #info {
+            color: black;
+        }
+        #title {
+            font-size: 22px;
+        }
+        .load-more {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            background-color: #6200ea;
+            color: white;
+            cursor: pointer;
+            margin: 20px 0;
+            transition: background-color 0.5s ease, opacity 0.5s ease, max-height 0.5s ease, margin 0.5s ease;
+            max-height: 50px;
+        }
+        .load-more.disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .load-more.hidden {
+            opacity: 0;
+            max-height: 0;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .intro-container {
+            text-align: center;
+            margin: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: max-height 1.2s ease, opacity 1s ease, padding 1s ease;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        .intro-container.visible {
+            max-height: 500px; /* 适应内容的最大高度 */
+            opacity: 1;
+            padding: 20px;
+        }
+        .recommendation {
+            display: none; /* 默认隐藏推荐容器 */
+            text-align: center;
+            margin: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .recommendation img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%; /* 圆形图片 */
+        }
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 28px;
+            }
+            .result-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .result-details {
+                margin-left: 0;
+                margin-top: 10px;
+                align-items: center;
+                text-align: center;
+            }
+            input[type="text"] {
+                width: 60%;
+            }
+            button {
+                padding: 10px;
+                width: 30%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1 onclick="clearSearch()">🌳 Q Music 搜索</h1>
+
+    <form method="post" action="{{ url_for('search_results') }}">
+        <input type="text" id="song_name" name="song_name" placeholder="搜索音乐/歌手/专辑……" value="{{ request.args.get('song_name', '') }}">
+        <button type="submit" onclick="hideIntro()">🎵</button>
+    </form>
+    
+    <div class="intro-container" id="intro-container">
+        <p>✨ 欢迎使用 Q Music 搜索！ ✨<br>🔍 点击网页标题可快速发起下一次搜索 🔍<br>♻️ 若点击按钮后无法获取更多结果，<br>请重新点击搜索按钮而不是刷新页面 ♻️<br>🔬 本站还处于开发阶段，功能不完善处请包涵。 🔬</p>
+        <p></p>
+    </div>
+
+    <div class="recommendation" id="recommendation">
+        <a href="https://pub-2f343bc3f5884c2bb9d409ccde31c5af.r2.dev/Vanilla%20Music%20Player.apk">
+            <img src="https://pub-2f343bc3f5884c2bb9d409ccde31c5af.r2.dev/香草音乐.webp" alt="Vanilla Music Player">
+        </a>
+        <a><br>🎶 Android 音乐播放器推荐：<br>把歌曲下载到本地后，推荐使用香草音乐播放器播放。这是一个很轻量、很美的播放器哦！单击图片即可下载。<br>请允许它扫描歌曲的元信息，这将使它支持歌词功能。</a>
+    </div>
+
+    {% if results %}
+        <div class="results" id="results">
+            {% for result in results %}
+                <div class="result-container">
+                    <a href="{{ url_for('song', songmid=result.songmid, search_term=request.args.get('song_name', '')) }}">
+                        <img src="{{ result.img_url }}" alt="Album Cover" loading="lazy"> <!-- 添加懒加载属性 -->
+                    </a>
+                    <div class="result-details">
+                        <a id="title" href="{{ url_for('song', songmid=result.songmid, search_term=request.args.get('song_name', '')) }}">{{ result.songname }}</a>
+                        <a id="info">歌手: {{ result.singer }}</a>
+                        <a id="info">专辑: {{ result.albumname }}</a>
+                        <a id="info">时长: {{ result.duration }}</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <button class="load-more" id="load-more-btn" onclick="loadMore()">获取更多结果</button>
+    {% endif %}
+    
+    <script>
+        function clearSearch() {
+            const searchInput = document.getElementById('song_name');
+            searchInput.value = '';
+            searchInput.focus();
+        }
+
+        function hideIntro() {
+            const introContainer = document.getElementById('intro-container');
+            if (introContainer) {
+                introContainer.classList.remove('visible');
+            }
+        }
+
+        function loadMore() {
+            const songName = document.getElementById('song_name').value;
+            fetch('{{ url_for("load_more") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ song_name: songName }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                const resultsDiv = document.getElementById('results');
+                const loadMoreBtn = document.getElementById('load-more-btn');
+                
+                if (Array.isArray(data)) {
+                    if (data.length === 0) {
+                        // 没有更多结果
+                        loadMoreBtn.classList.add('disabled');
+                        setTimeout(() => {
+                            loadMoreBtn.classList.add('hidden');
+                        }, 1000); // 1秒后开始淡出
+                    } else {
+                        data.forEach(result => {
+                            const resultContainer = document.createElement('div');
+                            resultContainer.className = 'result-container';
+                            resultContainer.innerHTML = `
+                                <a href="{{ url_for('song') }}?songmid=${result.songmid}&search_term=${songName}">
+                                    <img src="${result.img_url}" alt="Album Cover" loading="lazy">
+                                </a>
+                                <div class="result-details">
+                                    <a id="title" href="{{ url_for('song') }}?songmid=${result.songmid}&search_term=${songName}">${result.songname}</a>
+                                    <a id="info">歌手: ${result.singer}</a>
+                                    <a id="info">专辑: ${result.albumname}</a>
+                                    <a id="info">时长: ${result.duration}</a>
+                                </div>
+                            `;
+                            resultsDiv.appendChild(resultContainer);
+                        });
+                    }
+                } else {
+                    console.error('Error loading more results:', data.error);
+                }
+            })
+            .catch(error => console.error('Error loading more results:', error));
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const introContainer = document.getElementById('intro-container');
+            introContainer.classList.add('visible');
+            
+            const recommendation = document.getElementById('recommendation');
+            if (!window.location.pathname.includes('/results')) {
+                recommendation.style.display = 'block'; // 显示推荐容器
+            }
+        });
+    </script>
+</body>
+</html>
