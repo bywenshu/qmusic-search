@@ -22,6 +22,8 @@ S3 对象存储服务；
 ## 部署教程视频：
 ### YouTube
 [![Watch the video](https://pub-2f343bc3f5884c2bb9d409ccde31c5af.r2.dev/cover.jpg)](https://www.youtube.com/watch?v=e4fQuX6Dizo)
+### bilibili
+[部署教程](https://www.bilibili.com/video/BV1AnhDenE7G)
 ### Cloudflare R2
 [部署教程](https://pub-2f343bc3f5884c2bb9d409ccde31c5af.r2.dev/qmusic-search-Deployment.mp4)
 
