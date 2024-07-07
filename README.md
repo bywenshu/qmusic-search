@@ -13,8 +13,11 @@ S3 对象存储服务；
 ## 项目预览：
 [项目预览视频（存储在 Cloudflare R2）](https://pub-2f343bc3f5884c2bb9d409ccde31c5af.r2.dev/qmusic-search.mp4)
 
-## 部署视频（YouTube）：
+## 部署教程视频：
+### YouTube
 [![Watch the video](https://pub-2f343bc3f5884c2bb9d409ccde31c5af.r2.dev/cover.jpg)](https://www.youtube.com/watch?v=e4fQuX6Dizo)
+### Cloudflare R2
+[部署教程](https://pub-2f343bc3f5884c2bb9d409ccde31c5af.r2.dev/qmusic-search-Deployment.mp4)
 
 ## 环境配置：
 我开发用的环境：`Python 3.10.12`
