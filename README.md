@@ -7,7 +7,8 @@
 一个域名（添加两个解析，分别为 `[主域名]` 和 `[API 域名]` 添加解析）；  
 一台服务器；  
 S3 对象存储服务；  
-良好的网络。
+良好的网络；
+基础的 Linux 知识。
 
 ## 项目预览：
 [项目预览视频（存储在 Cloudflare R2）](https://pub-2f343bc3f5884c2bb9d409ccde31c5af.r2.dev/qmusic-search.mp4)
@@ -47,7 +48,7 @@ metadata.py     line 192 ~ 197
 ```html
 song.html       line 330
 ```
-说明：/processSong 路由调用 `metadata.py` 中的功能。这里要填入 `[API 域名]`（见下文）。
+说明：/processSong 路由调用 `metadata.py` 中的嵌入元信息功能。这里要填入 `[API 域名]`（见下文）。
 
 ## 可选项：
 ### 前端网页标题：
