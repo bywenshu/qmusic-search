@@ -8,7 +8,13 @@
 一台服务器；  
 S3 对象存储服务；  
 良好的网络；  
-基础的 Linux 知识。
+基础的 Linux 云服务器操作知识。
+
+## 部分文件功能介绍：
+`app.py` 网站后端、搜索功能。
+`metadata.py` 嵌入歌曲的歌词和封面等元信息并规范文件名，然后上传到 S3 存储。
+`index.html` 网站前端。
+`song.html` 音乐播放页面，可调用 `metadata.py` 以获取音乐。
 
 ## 项目预览：
 [项目预览视频（存储在 Cloudflare R2）](https://pub-2f343bc3f5884c2bb9d409ccde31c5af.r2.dev/qmusic-search.mp4)
