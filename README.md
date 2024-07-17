@@ -42,7 +42,7 @@ pip3 install -r requirements.txt
 
 ## 获取 QQ 音乐 Cookies：
 在 QQ 音乐电脑版官网登录账号后，浏览器控制台输入 `document.cookie` 即可获取 Cookies。  
-Cookies 大概 2~3 天就过期了，我也不知道要多久才过期。
+Cookies 大概 2~3 天就过期了，我也不知道具体要多久才过期。
 
 ## 必须配置：
 ### Cookies 填写位置：
