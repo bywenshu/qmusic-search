@@ -155,7 +155,7 @@ def search_results():
             duration_str = f"{minutes}:{seconds:02d}"
             
             music_url = QQM.get_music_url(songmid)
-            img_url = f'https://y.qq.com/music/photo_new/T002R800x800M000{albummid}.jpg?max_age=2592000' if albummid else 'https://pub-2f343bc3f5884c2bb9d409ccde31c5af.r2.dev/cover.jpg'
+            img_url = f'https://y.qq.com/music/photo_new/T002R800x800M000{albummid}.jpg?max_age=2592000' if albummid else 'https://axidiqolol53.objectstorage.ap-seoul-1.oci.customer-oci.com/n/axidiqolol53/b/lusic/o/resources/cover.jpg'
             
             results.append({
                 'songname': songname,
@@ -205,7 +205,7 @@ def load_more():
             duration_str = f"{minutes}:{seconds:02d}"
             
             music_url = QQM.get_music_url(songmid)
-            img_url = f'https://y.qq.com/music/photo_new/T002R800x800M000{albummid}.jpg?max_age=2592000' if albummid else 'https://pub-2f343bc3f5884c2bb9d409ccde31c5af.r2.dev/cover.jpg'
+            img_url = f'https://y.qq.com/music/photo_new/T002R800x800M000{albummid}.jpg?max_age=2592000' if albummid else 'https://axidiqolol53.objectstorage.ap-seoul-1.oci.customer-oci.com/n/axidiqolol53/b/lusic/o/resources/cover.jpg'
             
             new_results.append({
                 'songname': songname,
@@ -275,7 +275,7 @@ def get_music_info(songmid, search_term):
                     lyrics = '无法获取歌词'
 
                 music_url = QQM.get_music_url(songmid)
-                img_url = f'https://y.qq.com/music/photo_new/T002R800x800M000{albummid}.jpg?max_age=2592000' if albummid else 'https://pub-2f343bc3f5884c2bb9d409ccde31c5af.r2.dev/cover.jpg'
+                img_url = f'https://y.qq.com/music/photo_new/T002R800x800M000{albummid}.jpg?max_age=2592000' if albummid else 'https://axidiqolol53.objectstorage.ap-seoul-1.oci.customer-oci.com/n/axidiqolol53/b/lusic/o/resources/cover.jpg'
 
                 return {
                     "songname": songname,
